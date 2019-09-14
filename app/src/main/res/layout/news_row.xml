@@ -1,42 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#fff"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="10dp"
+    android:background="#fff">
+
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="8dp"
-        android:orientation="vertical">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <ImageView
             android:id="@+id/news_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"/>
+            android:layout_marginBottom="3dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_brightness_1_black_24dp"
-                />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/blue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_brightness_1_black_24dp" />
 
                 <LinearLayout
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_toLeftOf="@+id/time"
+                    android:layout_toRightOf="@+id/blue"
+                    android:orientation="vertical">
+
 
                     <TextView
                         android:id="@+id/title"
-                        android:layout_width="215dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
                         android:singleLine="true"
@@ -44,35 +59,40 @@
                         android:textColor="@color/black"
                         android:textSize="16dp" />
 
+
                     <TextView
-                        android:id="@+id/time"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/source"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="22:45"
-                        android:textSize="12dp" />
+                        android:text="news source"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="News Description!" />
                 </LinearLayout>
 
-
                 <TextView
-                    android:id="@+id/source"
-                    android:layout_width="250px"
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="news source"
-                    android:textColor="@color/black" />
+                    android:layout_toLeftOf="@+id/href"
+                    android:text="22:45"
+                    android:textSize="12dp" />
 
-                <TextView
-                    android:id="@+id/description"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="News Description!" />
-            </LinearLayout>
 
-            <ImageView
-                android:id="@+id/href"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@drawable/ic_chevron_right_black_24dp" />
+                <ImageView
+                    android:id="@+id/href"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_chevron_right_black_24dp" />
+
+            </RelativeLayout>
         </LinearLayout>
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
