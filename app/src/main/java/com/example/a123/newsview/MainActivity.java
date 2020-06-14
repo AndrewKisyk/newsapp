@@ -1,7 +1,9 @@
 package com.example.a123.newsview;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,12 +18,15 @@ import android.widget.Toast;
 
 import com.example.a123.newsview.Adapters.ArticleAdapter;
 import com.example.a123.newsview.Loaders.NewsLoaderCallback;
+import com.example.a123.newsview.model.Article;
 import com.example.a123.newsview.model.News;
 
 public class MainActivity extends AppCompatActivity {
-    private ArticleAdapter adapter;
+
     private RecyclerView recyclerView;
     private ProgressDialog progressDialog;
+    private RecyclerViewClickListener recyclerlistener;
+    private SearchViewQueryTextListener textListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
         //customizing the search view
         final SearchView search = (SearchView) findViewById(R.id.searchView);
-        customizeSearchView(search);
+        initView(search);
 
+        initListeners();
 
         recyclerView = (RecyclerView) findViewById(R.id.news);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
@@ -50,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setMessage("Uploading...");
         progressDialog.show();
 
-        LoaderManager.LoaderCallbacks<News> callbacks = new NewsLoaderCallback(MainActivity.this, recyclerView, progressDialog, search);
+            LoaderManager.LoaderCallbacks<News> callbacks = new NewsLoaderCallback(MainActivity.this, recyclerView, progressDialog, search,
+                    recyclerlistener, textListener);
         if (restart) {
             getSupportLoaderManager().restartLoader(1, Bundle.EMPTY, callbacks);
         } else {
@@ -58,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void customizeSearchView(final SearchView msearch) {
+
+    private void initView(final SearchView msearch){
         int id = getResources().getIdentifier("android:id/search_src_text", null, null);
         EditText searchEditText = (EditText) msearch.findViewById(id);
         if (searchEditText != null) {
@@ -81,7 +89,26 @@ public class MainActivity extends AppCompatActivity {
         View searchPlate = msearch.findViewById(searchPlateId);
         if (searchPlate != null) {
             searchPlate.setBackgroundColor(Color.TRANSPARENT);
-            int searchTextId = searchPlate.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         }
+    }
+
+    private void initListeners(){
+        this.recyclerlistener = (view, position, article) -> {
+            initRecyclerViewListener(view, position, article);
+        };
+
+        this.textListener = (s, adapter)-> {
+            initSearchViewListenerChange(s, adapter);
+        };
+    }
+
+    private void initSearchViewListenerChange(String s, ArticleAdapter adapter){
+        adapter.getFilter().filter(s);
+
+    }
+
+    private void initRecyclerViewListener(View view, int position, Article article){
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(article.getUrl()));
+        this.startActivity(browserIntent);
     }
 }

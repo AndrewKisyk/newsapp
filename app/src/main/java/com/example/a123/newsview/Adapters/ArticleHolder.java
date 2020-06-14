@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a123.newsview.R;
+import com.example.a123.newsview.RecyclerViewClickListener;
 import com.example.a123.newsview.model.Article;
 import com.squareup.picasso.Picasso;
 
@@ -23,9 +24,11 @@ public class ArticleHolder extends RecyclerView.ViewHolder implements View.OnCli
     public ImageView href;
 
     private Article marticle;
+    private RecyclerViewClickListener mListener;
+
     Context context;
 
-    public ArticleHolder(Context context, @NonNull View itemView) {
+    public ArticleHolder(Context context, @NonNull View itemView, RecyclerViewClickListener listener) {
         super(itemView);
 
         this.context = context;
@@ -35,6 +38,8 @@ public class ArticleHolder extends RecyclerView.ViewHolder implements View.OnCli
         source = (TextView) itemView.findViewById(R.id.source);
         description = (TextView) itemView.findViewById(R.id.description);
         href = (ImageView) itemView.findViewById(R.id.href);
+
+        mListener = listener;
         href.setOnClickListener(this);
 
     }
@@ -54,7 +59,6 @@ public class ArticleHolder extends RecyclerView.ViewHolder implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(marticle.getUrl()));
-        ArticleHolder.this.context.startActivity(browserIntent);
+      mListener.onClick(view, getAdapterPosition(), marticle);
     }
 }

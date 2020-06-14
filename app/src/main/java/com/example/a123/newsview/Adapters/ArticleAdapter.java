@@ -10,6 +10,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import com.example.a123.newsview.R;
+import com.example.a123.newsview.RecyclerViewClickListener;
+import com.example.a123.newsview.SearchViewQueryTextListener;
 import com.example.a123.newsview.model.Article;
 
 import java.util.ArrayList;
@@ -20,12 +22,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleHolder> implemen
     private List<Article> mArticle;
 
     private List<Article> mArticleFull;
+    private RecyclerViewClickListener mListener;
     Context context;
 
-    public ArticleAdapter(Context context, List<Article> articles) {
+    public ArticleAdapter(Context context, List<Article> articles, RecyclerViewClickListener listener ) {
         this.context = context;
         mArticle = articles;
         mArticleFull = new ArrayList<>(articles);
+        mListener = listener;
     }
 
     @NonNull
@@ -33,7 +37,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleHolder> implemen
     public ArticleHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.news_row, viewGroup, false);
-        return new ArticleHolder(context, view);
+        return new ArticleHolder(context, view, mListener);
     }
 
     @Override

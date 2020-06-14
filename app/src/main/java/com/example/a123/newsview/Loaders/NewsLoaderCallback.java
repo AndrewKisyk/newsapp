@@ -12,19 +12,25 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.a123.newsview.Adapters.ArticleAdapter;
+import com.example.a123.newsview.RecyclerViewClickListener;
+import com.example.a123.newsview.SearchViewQueryTextListener;
 import com.example.a123.newsview.model.News;
 
 public class NewsLoaderCallback implements LoaderManager.LoaderCallbacks<News> {
     Context context;
     private RecyclerView itemView;
     private ProgressDialog progressDialog;
-    private  SearchView search;
-    public NewsLoaderCallback(Context context, RecyclerView itemView, ProgressDialog progressDialog, SearchView search){
+    private SearchView search;
+    private RecyclerViewClickListener mListener;
+    private SearchViewQueryTextListener mtextListener;
+    public NewsLoaderCallback(Context context, RecyclerView itemView, ProgressDialog progressDialog, SearchView search, RecyclerViewClickListener listener, SearchViewQueryTextListener textListener){
         super();
         this.context = context;
         this.itemView = itemView;
         this.progressDialog = progressDialog;
         this.search = search;
+        mListener = listener;
+        mtextListener = textListener;
     }
     @NonNull
     @Override
@@ -47,8 +53,9 @@ public class NewsLoaderCallback implements LoaderManager.LoaderCallbacks<News> {
             return;
         }
         progressDialog.dismiss();
-        final ArticleAdapter adapter = new ArticleAdapter(context, news.getArticles());
+        final ArticleAdapter adapter = new ArticleAdapter(context, news.getArticles(), mListener);
         itemView.setAdapter(adapter);
+
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -57,7 +64,7 @@ public class NewsLoaderCallback implements LoaderManager.LoaderCallbacks<News> {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                adapter.getFilter().filter(s);
+               mtextListener.onQueryTextChange(s, adapter);
                 return false;
             }
         });
